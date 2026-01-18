@@ -9,20 +9,11 @@ pursue them!
 
 *GET /v1/resource1/*
 
-**Implementation Status:** ✅ Completed with Spring Boot 3.3.9
+Create a controller with a GET endpoint that returns a list of resources. The controller should call a service method `getResources()` to get the data.
 
-The implementation includes:
-- `Resource1Controller` with GET `/v1/resource1` endpoint that returns a list
-- `Resource1Service` interface and `Resource1ServiceImpl` implementation
-- Unit test `Resource1ControllerTest` using `@WebMvcTest` that:
-  - Mocks the service using `@MockBean`
-  - Tests the endpoint using `MockMvc`
-  - Verifies service method calls using `Mockito.verify`
-  - Tests both empty list and populated list scenarios
+Write unit tests that mock the service and verify the interaction between controller and service using `Mockito.verify`.
 
-The controller calls the service method `getResources()` which returns a list. The unit test demonstrates how to mock the service and verify the interaction between controller and service.
-
-### 1. Service implementation
+### 2. Service implementation
 
     Switch to the service. Still no implementation of the method called by the
     controller, you should have a stub by now. Use TDD to create an implementation
@@ -37,7 +28,7 @@ The controller calls the service method `getResources()` which returns a list. T
 
         See the class ExceptionHandling for more on this.
 
-### 1. Capture the call
+### 3. Capture the call
 
     Create a Post method in the controller that creates a new album. Hint: use
     `@PostMapping` annotation and define a class for the body, perhaps `CreateAlbumRequest`?
