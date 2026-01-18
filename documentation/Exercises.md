@@ -4,14 +4,25 @@ Some suggested exercises. The purpose is to learn mocking. If you come with your
 pursue them!
 
 ## The exercises
-1. Controller - Service interaction
 
-    The controller returns an empty list. Using TDD, drive forward
-    an implementation that calls the service. Hint: use `Mockito.verify`.
+### 1. Controller - Service interaction
 
-    The service has no method yet, let the test tell you what it should be like.
+*GET /v1/resource1/*
 
-1. Service implementation
+**Implementation Status:** ✅ Completed with Spring Boot 3.3.9
+
+The implementation includes:
+- `Resource1Controller` with GET `/v1/resource1` endpoint that returns a list
+- `Resource1Service` interface and `Resource1ServiceImpl` implementation
+- Unit test `Resource1ControllerTest` using `@WebMvcTest` that:
+  - Mocks the service using `@MockBean`
+  - Tests the endpoint using `MockMvc`
+  - Verifies service method calls using `Mockito.verify`
+  - Tests both empty list and populated list scenarios
+
+The controller calls the service method `getResources()` which returns a list. The unit test demonstrates how to mock the service and verify the interaction between controller and service.
+
+### 1. Service implementation
 
     Switch to the service. Still no implementation of the method called by the
     controller, you should have a stub by now. Use TDD to create an implementation
@@ -26,7 +37,7 @@ pursue them!
 
         See the class ExceptionHandling for more on this.
 
-1. Capture the call
+### 1. Capture the call
 
     Create a Post method in the controller that creates a new album. Hint: use
     `@PostMapping` annotation and define a class for the body, perhaps `CreateAlbumRequest`?
@@ -40,7 +51,7 @@ pursue them!
 
     Hint: use `ArgumentCaptor`, see the README.
 
-## Live
+### Live
 
 Of course you like to try it out with the browser.
 
