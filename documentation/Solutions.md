@@ -59,3 +59,50 @@ The implementation includes:
   - Demonstrates how to use `ArgumentCaptor` to inspect method arguments
 
 The key learning point is using `ArgumentCaptor` to verify that the service generates a new UUID and passes it to the repository's `save` method, ensuring the application (not the database) generates the primary key.
+
+## Exercise 4: Live
+
+**Implementation Status:** ✅ Completed
+
+The implementation includes:
+- `Application` - Main Spring Boot application class (located at `info.jab.demo.Application`)
+- Spring Boot Docker Compose support - Automatically starts PostgreSQL container from `docker-compose.yml`
+- Flyway database migrations - Automatically creates tables and loads test data on startup
+- Spring Data JDBC - Repository implementation for database access
+- REST API endpoints:
+  - GET `/v1/albums` - Returns list of all albums
+  - POST `/v1/albums` - Creates a new album
+
+**How to run:**
+1. Start the application:
+   ```bash
+   ./mvnw clean spring-boot:run
+   ```
+2. The application will automatically:
+   - Start PostgreSQL container via Docker Compose
+   - Run Flyway migrations to create the `albums` table
+   - Load test data from migration scripts
+   - Start the web server on port 8080
+
+**Testing the API:**
+- Get all albums:
+  ```bash
+  curl -X GET http://localhost:8080/v1/albums
+  ```
+- Create a new album:
+  ```bash
+  curl -X POST http://localhost:8080/v1/albums \
+    -H "Content-Type: application/json" \
+    -d '{"name": "My New Album"}'
+  ```
+
+**Key Implementation Details:**
+- **Port:** The application runs on port 8080 (default Spring Boot port), not 5705 as mentioned in the exercise
+- **Endpoint Path:** `/v1/albums` (includes the `/v1` prefix)
+- **Database:** PostgreSQL automatically managed by Spring Boot Docker Compose support
+- **Migrations:** Flyway migrations in `src/main/resources/db/migration/`:
+  - `V1__Create_albums_table.sql` - Creates the albums table
+  - `V2__Insert_test_data.sql` - Inserts 3 test albums
+- **Persistence:** Uses custom `insertAlbum()` method with `@Modifying` and `@Query` annotations to properly handle manually assigned UUIDs in Spring Data JDBC
+
+**Note:** The main class is `Application` (not `ThebandApplication` as mentioned in the exercise), and the application uses Spring Boot 3.5.9 with Java 25.
