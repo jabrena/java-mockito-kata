@@ -4,6 +4,7 @@ import info.jab.demo.controller.CreateAlbumRequest;
 import info.jab.demo.model.AlbumEntity;
 import info.jab.demo.repository.AlbumRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +24,10 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    @Transactional
     public AlbumEntity createAlbum(CreateAlbumRequest request) {
         UUID uuid = UUID.randomUUID();
-        AlbumEntity album = new AlbumEntity(uuid, request.name());
-        return albumRepository.save(album);
+        albumRepository.insertAlbum(uuid, request.name());
+        return new AlbumEntity(uuid, request.name());
     }
 }

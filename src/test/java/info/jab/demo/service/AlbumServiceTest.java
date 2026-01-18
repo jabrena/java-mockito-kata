@@ -88,9 +88,7 @@ class AlbumServiceTest {
     void shouldCreateAlbumWithGeneratedUUID() {
         // Given
         CreateAlbumRequest request = new CreateAlbumRequest("Test Album");
-        UUID generatedUuid = UUID.randomUUID();
-        AlbumEntity savedAlbum = new AlbumEntity(generatedUuid, "Test Album");
-        when(albumRepository.save(any(AlbumEntity.class))).thenReturn(savedAlbum);
+        doNothing().when(albumRepository).insertAlbum(any(UUID.class), anyString());
 
         // When
         AlbumEntity result = albumService.createAlbum(request);
@@ -98,14 +96,18 @@ class AlbumServiceTest {
         // Then
         assertNotNull(result);
         assertEquals("Test Album", result.name());
+        assertNotNull(result.id(), "UUID should be generated");
+        assertTrue(result.id() instanceof UUID, "ID should be a UUID");
 
-        // Use ArgumentCaptor to verify the UUID was generated
-        ArgumentCaptor<AlbumEntity> albumCaptor = ArgumentCaptor.forClass(AlbumEntity.class);
-        verify(albumRepository).save(albumCaptor.capture());
+        // Use ArgumentCaptor to verify the UUID was generated and passed to insertAlbum
+        ArgumentCaptor<UUID> uuidCaptor = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<String> nameCaptor = ArgumentCaptor.forClass(String.class);
+        verify(albumRepository).insertAlbum(uuidCaptor.capture(), nameCaptor.capture());
 
-        AlbumEntity capturedAlbum = albumCaptor.getValue();
-        assertNotNull(capturedAlbum.id(), "UUID should be generated");
-        assertTrue(capturedAlbum.id() instanceof UUID, "ID should be a UUID");
-        assertEquals("Test Album", capturedAlbum.name());
+        UUID capturedUuid = uuidCaptor.getValue();
+        String capturedName = nameCaptor.getValue();
+        assertNotNull(capturedUuid, "UUID should be generated");
+        assertEquals("Test Album", capturedName);
+        assertEquals(capturedUuid, result.id(), "Returned album should have the same UUID");
     }
 }

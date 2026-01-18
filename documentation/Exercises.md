@@ -15,32 +15,32 @@ Write unit tests that mock the service and verify the interaction between contro
 
 ### 2. Service implementation
 
-    Switch to the service. Still no implementation of the method called by the
-    controller, you should have a stub by now. Use TDD to create an implementation
-    where you handle the cases, nothing in the database, something in the database
-    and broken database. Hint: `Mockito.when` with `thenReturn` and with `thenThrow`.
+Switch to the service. Still no implementation of the method called by the
+controller, you should have a stub by now. Use TDD to create an implementation
+where you handle the cases, nothing in the database, something in the database
+and broken database. Hint: `Mockito.when` with `thenReturn` and with `thenThrow`.
 
-    There is some test code already. Use it for inspiration.
+There is some test code already. Use it for inspiration.
 
-        Sidenote: Exception handling in a micro service is a bit different. You generally have
-        an exception mapper that returns standard Http status codes, such as 404
-        for something not found. Therefore, checked exceptions are not used.
+    Sidenote: Exception handling in a micro service is a bit different. You generally have
+    an exception mapper that returns standard Http status codes, such as 404
+    for something not found. Therefore, checked exceptions are not used.
 
-        See the class ExceptionHandling for more on this.
+    See the class ExceptionHandling for more on this.
 
 ### 3. Capture the call
 
-    Create a Post method in the controller that creates a new album. Hint: use
-    `@PostMapping` annotation and define a class for the body, perhaps `CreateAlbumRequest`?
+Create a Post method in the controller that creates a new album. Hint: use
+`@PostMapping` annotation and define a class for the body, perhaps `CreateAlbumRequest`?
 
-    The controller should get help from a service method in the same pattern as
-    above.
+The controller should get help from a service method in the same pattern as
+above.
 
-    The AlbumEntity should have a UUID as primary key and we will let the application,
-    not the database, generate it (`UUID.randomUUID().toString()`). Verify that
-    the service calls `save` on the repository with a new UUID.
+The AlbumEntity should have a UUID as primary key and we will let the application,
+not the database, generate it (`UUID.randomUUID().toString()`). Verify that
+the service calls `save` on the repository with a new UUID.
 
-    Hint: use `ArgumentCaptor`, see the README.
+Hint: use `ArgumentCaptor`, see the README.
 
 ### 4. Live
 
