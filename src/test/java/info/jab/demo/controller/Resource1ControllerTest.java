@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,6 +50,26 @@ class Resource1ControllerTest {
         mockMvc.perform(get("/v1/resource1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[\"resource1\", \"resource2\", \"resource3\"]"));
+
+        verify(resource1Service, times(1)).getResources();
+    }
+
+    @Test
+    void shouldReturnInternalServerErrorWhenServiceThrowsException() throws Exception {
+        // Given - broken database scenario
+        RuntimeException databaseException = new RuntimeException("Database connection failed");
+        when(resource1Service.getResources()).thenThrow(databaseException);
+
+        // When & Then
+        mockMvc.perform(get("/v1/resource1"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(result -> {
+                    Throwable resolvedException = result.getResolvedException();
+                    assertNotNull(resolvedException, "Exception should be resolved by exception handler");
+                    assertTrue(resolvedException instanceof RuntimeException,
+                            "Exception should be RuntimeException");
+                    assertEquals("Database connection failed", resolvedException.getMessage());
+                });
 
         verify(resource1Service, times(1)).getResources();
     }
