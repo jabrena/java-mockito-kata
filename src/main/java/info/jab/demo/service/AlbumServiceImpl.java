@@ -19,6 +19,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AlbumEntity> getAlbums() {
         return albumRepository.findAll();
     }
