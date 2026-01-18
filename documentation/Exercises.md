@@ -7,7 +7,7 @@ pursue them!
 
 ### 1. Controller - Service interaction
 
-*GET /v1/resource1/*
+*GET /v1/albums/*
 
 Create a controller with a GET endpoint that returns a list of resources. The controller should call a service method `getResources()` to get the data.
 
@@ -42,7 +42,7 @@ Write unit tests that mock the service and verify the interaction between contro
 
     Hint: use `ArgumentCaptor`, see the README.
 
-### Live
+### 4. Live
 
 Of course you like to try it out with the browser.
 

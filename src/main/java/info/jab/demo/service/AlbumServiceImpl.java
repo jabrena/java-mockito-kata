@@ -5,6 +5,7 @@ import info.jab.demo.model.AlbumEntity;
 import info.jab.demo.repository.AlbumRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,8 +18,13 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    public List<AlbumEntity> getAlbums() {
+        return albumRepository.findAll();
+    }
+
+    @Override
     public AlbumEntity createAlbum(CreateAlbumRequest request) {
-        String uuid = UUID.randomUUID().toString();
+        UUID uuid = UUID.randomUUID();
         AlbumEntity album = new AlbumEntity(uuid, request.name());
         return albumRepository.save(album);
     }
