@@ -35,3 +35,27 @@ The implementation includes:
   - Uses `@Mock` for the repository and `@InjectMocks` for the service
 
 The service implementation follows TDD principles: tests were written first, then the implementation was created to make them pass. All three scenarios from the exercise are covered.
+
+## Exercise 3: Capture the call
+
+**Implementation Status:** ✅ Completed
+
+The implementation includes:
+- `AlbumEntity` - Model class with UUID as primary key (String id field)
+- `CreateAlbumRequest` - DTO class for the POST request body containing album name
+- `AlbumRepository` interface with `save(AlbumEntity album)` method
+- `AlbumService` interface and `AlbumServiceImpl` implementation that:
+  - Generates a UUID using `UUID.randomUUID().toString()`
+  - Creates an `AlbumEntity` with the generated UUID and request name
+  - Calls the repository's `save` method
+- `AlbumController` with POST `/v1/albums` endpoint that:
+  - Accepts `CreateAlbumRequest` in the request body
+  - Calls the service to create the album
+  - Returns HTTP 201 Created with the created album entity
+- `AlbumServiceTest` - Unit test using `@ExtendWith(MockitoExtension.class)` that:
+  - Uses `ArgumentCaptor<AlbumEntity>` to capture the entity passed to the repository
+  - Verifies that a valid UUID was generated and set on the entity
+  - Verifies that the service calls `save` on the repository with the new UUID
+  - Demonstrates how to use `ArgumentCaptor` to inspect method arguments
+
+The key learning point is using `ArgumentCaptor` to verify that the service generates a new UUID and passes it to the repository's `save` method, ensuring the application (not the database) generates the primary key.
